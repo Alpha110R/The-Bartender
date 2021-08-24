@@ -1,5 +1,5 @@
 # The-Bartender
 The bartender is a project that i chose to do in my "Makerim" course, i had to choose by myself a project that will be fun, engaging and challenging.
-I am new to the arduino world and C++ and i found that this world is very intresting and rewarding because you create somthing from scrach.
-Its nice to create phisical product that combain the software world. The software is the brain of the product that conducts all the different component in the project.
-
+I am new to the arduino world and C++ and I found that this world is very intresting and rewarding because you create somthing from scratch and I design it like how I want it to be.
+Its nice to create phisical product that combain the software world. The software in the arduino's projects are the brain of the products that conduct all the different component in the project.
+The bartender is a challenging project but also a lot of fun. The main challenge here that I comfront with is really to learn all from scrach, I dont have any background at arduino and it electricity needs, but I have a little bit knowledge about C++. The knowledge I have is programming. I learned java,C and python so i have the foundamantle but mainly I learned how to study new subjects and technologies. Therefore I can take on myself a big project like that. It includes several sensors, water pumps, LCD and more components. All those components are connect to the arduino with my code that I wrote for this specific project.
