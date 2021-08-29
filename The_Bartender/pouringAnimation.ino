@@ -1,5 +1,4 @@
 
-
 // setting animation speed (delay between frames)
 int x = 150;
 // setting time for Man waiting
