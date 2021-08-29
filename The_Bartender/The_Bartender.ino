@@ -10,7 +10,7 @@ LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 boolean intro = false;//flag for the intro (will be tonly one time)
 boolean inDrinkMenu = false;// flag to separate between the main menu to the drink menu
-boolean flagPouring =false; //flag for not pouring in the enter to the drink menu
+boolean flagPouring = false; //flag for not pouring in the enter to the drink menu
 
 int counterMenu = 1; //by this number i will know wich pump to use (wich drink to poure)
 //counter the rotary button for the menu (options)
@@ -42,6 +42,9 @@ void setup()
   rotary.setErrorDelay(250);
   Serial.begin(9600);
 
+  pinMode(9, OUTPUT);//pump #1
+  pinMode(8, OUTPUT);//pump #2
+  //digitalWrite(LED_BUILTIN, HIGH);
 }
 
 void loop()
@@ -52,7 +55,7 @@ void loop()
   char message2[] = "***MAKERIM***";
   char* ptr = message;
   char* ptr2 = message2;
-  
+
   rotateButton = rotary.rotate();//receive the rotation of the button to the main menu
   //rotateButtonDrink = rotary.rotate();//receive the rotation of the button to the drink menu
   pushButton = rotary.push();//receive the pressing at the button
@@ -62,7 +65,7 @@ void loop()
     Serial.println(pushButton);
 
 
-  if (intro == false) {//Intro - welcoming the user/ sliding sentence
+  if (!intro) {//Intro - welcoming the user/ sliding sentence
     lcd.clear();
     lcd.setCursor(0, 0);
     for (int i = 0 ; i < (sizeof(message) / sizeof(*message)) - 1 ; ++i)
@@ -91,7 +94,7 @@ void loop()
     counterDrinkMenu = 1;
     switch (rotateButton) {
       case 1:
-        if (counterMenu == 3) {// 3 is the limit at the menu
+        if (counterMenu == 2) {// 3 is the limit at the menu
           break;
         }
         counterMenu += 1;
@@ -107,13 +110,11 @@ void loop()
 
     if (previousChoice != counterMenu) //clear the screen to the next option
       lcd.clear();
-    Menu(counterMenu, pushButton, rotateButton);
+    Menu(pushButton, rotateButton);
     previousChoice = counterMenu;
   }
   else {
-    //inDrinkMenu =true;
-    //rotateButtonFunctionDrinkMenu(rotateButton, counterMenu , counterDrinkMenu, pushButton);
-    flagPouring =true;
+    flagPouring = true;
     switch (rotateButton) {
       case 1:
         if (counterDrinkMenu == 4) {// 3 is the limit at the menu
@@ -131,43 +132,23 @@ void loop()
     }
     if (previousChoiceDrink != counterDrinkMenu) //clear the screen to the next option
       lcd.clear();
-    drinkMenu(counterMenu, counterDrinkMenu, pushButton);
+    drinkMenu(pushButton);//counterMenu, counterDrinkMenu
     previousChoiceDrink = counterDrinkMenu;
   }
 }
+
+
 ////////////////////////////////////////////////////
-void rotateButtonFunctionMainMenu(int rotateButton, int counterMenu) {
-  switch (rotateButton) {
-    case 1:
-      if (counterMenu == 3) {// 3 is the limit at the menu
-        break;
-      }
-      counterMenu += 1;
-      break;
-
-    case 2:
-      if (counterMenu == 1) {// 1 is the limit at the menu
-        break;
-      }
-      counterMenu -= 1;
-      break;
-  }
-}
-
-void Menu(int counterMenu, int pushButton, int rotateButton) {//start music
+void Menu(int pushButton, int rotateButton) {//start music //counterMenu,
   switch (counterMenu) {
     case 1:
       lcd.print("Whisky");
       break;
     case 2:
-      lcd.print("Taquila");
-      break;
-    case 3:
       lcd.print("Vodka");
       break;
   }
   if (pushButton == 1) {
-    //rotateButtonFunctionDrinkMenu(rotateButton , counterMenu , counterDrinkMenu, pushButton);
     inDrinkMenu = true;
     switch (rotateButton) {
       case 1:
@@ -185,29 +166,12 @@ void Menu(int counterMenu, int pushButton, int rotateButton) {//start music
         break;
     }
     lcd.clear();
-    drinkMenu(counterMenu, counterDrinkMenu, pushButton);
+    drinkMenu(pushButton);//counterMenu,counterDrinkMenu
   }
 }
 
-void rotateButtonFunctionDrinkMenu(int rotateButton, int counterMenu , int counterDrinkMenu, int pushButton) {
-  switch (rotateButton) {
-    case 1:
-      if (counterDrinkMenu == 4) {// 3 is the limit at the menu
-        break;
-      }
-      counterDrinkMenu += 1;
-      break;
 
-    case 2:
-      if (counterDrinkMenu == 1) {// 1 is the limit at the menu
-        break;
-      }
-      counterDrinkMenu -= 1;
-      break;
-  }
-}
-
-void drinkMenu(int counterMenu, int counterDrinkMenu, int pushButton) { //drink music
+void drinkMenu(int pushButton) { //drink music *counterDrinkMenu
   switch (counterDrinkMenu) {
     case 1:
       lcd.print("Chaser");
@@ -220,7 +184,7 @@ void drinkMenu(int counterMenu, int counterDrinkMenu, int pushButton) { //drink 
       break;
     case 4:
       lcd.print("Back");
-      flagPouring =false;
+      flagPouring = false;
       break;
   }
   if (previousChoiceDrink != counterDrinkMenu) { //clear the screen to the next option
@@ -228,7 +192,7 @@ void drinkMenu(int counterMenu, int counterDrinkMenu, int pushButton) { //drink 
     Serial.println(counterMenu);
     Serial.println(counterDrinkMenu);
   }
-  if (pushButton == 1 && counterDrinkMenu != 4 && flagPouring==true)
+  if (pushButton == 1 && counterDrinkMenu != 4 && flagPouring == true)
     pouringBeverage(counterMenu, counterDrinkMenu);
   if (pushButton == 1 && counterDrinkMenu == 4) {
     inDrinkMenu = false; // return to the main menu
@@ -238,7 +202,36 @@ void drinkMenu(int counterMenu, int counterDrinkMenu, int pushButton) { //drink 
 
 void pouringBeverage (int beverage, int amount) {
   lcd.clear();
-  pouringAnimation();
+  switch (beverage) {
+    case 1://whiskey
+      digitalWrite(9, HIGH);
+      pouring(amount);
+      digitalWrite(9, LOW);
+      break;
+    case 2: //vodka
+      digitalWrite(8, HIGH);
+      pouring(amount);
+      digitalWrite(8, LOW);
+      break;
+  }
+}
+//pouringAnimation();
+
+void pouring(int amount) {
+  lcd.setCursor(0, 0);
+  lcd.print("Pouring...");
+  switch (amount) {
+    case 1: //chaser
+      delay(8500);
+      break;
+    case 2: //shot
+      delay(23000);
+      break;
+    case 3://glass
+      delay(32000);
+      break;
+  }
+  lcd.clear();
 }
 
 void pouringAnimation() {
