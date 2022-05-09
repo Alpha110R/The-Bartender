@@ -3,7 +3,7 @@ The bartender is a project that I chose to do in my "Makerim" course, I had to c
 I am new to the Arduino world and C++ and I found that this world is very interesting and rewarding because you create something from scratch and I designed it how I want it to be.
 The bartender is a challenging project but also a lot of fun. The main challenge I confront was learning all from scratch. I don't have any background in Arduino and its electricity needs, but I have a little bit of knowledge about C. I learned how to study new subjects and technologies. Therefore I can take on a big project like this. It includes several sensors, water pumps, LCDs, and more components. All those components are connected to the Arduino.
 
-![Image1](https://user-images.githubusercontent.com/68230416/167391301-27214106-6a5f-419e-bcca-44f912752075.jpeg)
+![WhatsApp Image 2021-08-30 at 17 54 04](https://user-images.githubusercontent.com/68230416/167394305-53674ec3-abe1-492d-af7a-91d23c1b2f9d.jpeg)
 
 ![Image2](https://user-images.githubusercontent.com/68230416/167391243-9e972a1f-8596-4df2-9de0-d050ad0e939f.jpeg)
 
@@ -29,3 +29,5 @@ https://user-images.githubusercontent.com/68230416/167391352-eb5136a9-6c84-47f2-
 The bartender can puor 2 or more drinks.
 You can see the drink menu and the different amounts of liquid on the LCD. You can scroll and choose by the rotary button.
 Moreover there are 2 buttons to change songs and music volume.
+
+https://user-images.githubusercontent.com/68230416/167394160-d66c5ee1-271a-4c25-b257-417c30bbdc5a.mp4
